@@ -32,9 +32,7 @@ timeout: 720
 tests:"""
 
 def gen_abtest_config(control: str, treatment: str, models: List[str]) -> str:
-    d = {}
-    d["control"] = control
-    d["treatment"] = treatment
+    d = {'control': control, 'treatment': treatment}
     config = ABTEST_CONFIG_TEMPLATE.format(**d)
     if models == ["ALL"]:
         return config + "\n"
@@ -51,8 +49,7 @@ def setup_gha_env(name: str, val: str) -> None:
 
 def find_current_branch(repo_path: str) -> str:
     repo = git.Repo(repo_path)
-    name: str = repo.active_branch.name
-    return name
+    return repo.active_branch.name
 def deploy_torchbench_config(output_dir: str, config: str) -> None:
     # Create test dir if needed
     pathlib.Path(output_dir).mkdir(exist_ok=True)
