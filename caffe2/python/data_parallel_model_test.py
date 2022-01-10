@@ -909,8 +909,10 @@ class SparseDataParallelModelTest(TestCase):
                 model.params.append(gpu_vecs)
                 gathered = model.net.Gather([gpu_vecs, 'indices'], 'gathered')
             flattened = model.Flatten(gathered, "flattened")
-            fc = model.FC(flattened, "fc", 16 * 16, 1,
-                          ("ConstantFill", {}), ("ConstantFill", {}))
+            fc = model.FC(
+                flattened, "fc", 16 ** 2, 1, ("ConstantFill", {}), ("ConstantFill", {})
+            )
+
             fc_fl = model.FlattenToVec(fc, "fc_fl")
             sigm = model.Sigmoid(fc_fl, "sigm")
             sq = model.SquaredL2Distance([sigm, "label"], "sq")
@@ -1122,7 +1124,7 @@ class ParallelizeBMUFTest(TestCase):
         np.random.seed(26)
         # Each run has same input, independent of number of gpus
         batch_size = 64
-        for _ in range(0, 10):
+        for _ in range(10):
             full_data = np.random.rand(batch_size, 16)
             full_labels = np.round(full_data[:, 0])
             batch_per_device = batch_size // len(devices)

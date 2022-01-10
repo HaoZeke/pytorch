@@ -54,11 +54,10 @@ class QComparatorBenchmark(op_bench.TorchBenchmarkBase):
                 return self.qop(q_input_a, 42, out=torch.tensor(True, dtype=torch.bool))
             else:
                 return self.qop(q_input_a, q_input_b, out=torch.tensor(True, dtype=torch.bool))
+        elif other_scalar:
+            return self.qop(q_input_a, 42)
         else:
-            if other_scalar:
-                return self.qop(q_input_a, 42)
-            else:
-                return self.qop(q_input_a, q_input_b)
+            return self.qop(q_input_a, q_input_b)
 
 
 
